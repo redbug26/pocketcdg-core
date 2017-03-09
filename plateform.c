@@ -35,11 +35,6 @@ u16 palette[16];
 
 int pos_cdg;
 
-int standalone;
-int shutdown;
-
-
-int nbframe;
 
 int firsttime;
 
@@ -82,13 +77,9 @@ void GpSetPaletteEntry(u8 i, u8 r, u8 g, u8 b)
 void CDGLoad(char *filename)
 {
 
-
-    shutdown = 0;
-
-    int n;
-
     firsttime = 1;
 
+    int n;
     for (n = 0; n < 16; n++) {
         GpSetPaletteEntry(n, 0, 0, 0);
     }
@@ -99,8 +90,6 @@ void CDGLoad(char *filename)
     cdg_refresh = 0;
 
     pos_cdg = 0;
-
-    nbframe = 0;
 
     pauseCDG = 0;
     save = 0;
@@ -123,8 +112,6 @@ void getFrame(u16 *frame, int pos_mp3, int fps)
     int n;
 
 
-    nbframe++;
-
     cont = 1;
 
     if (pauseCDG == 1) {
@@ -139,7 +126,7 @@ void getFrame(u16 *frame, int pos_mp3, int fps)
     if (cont) {
         if (firsttime == 1) {
 
-            memset(frame, 320 * 240 * 2, 0);
+            memset(frame, 0, 320 * 240 * 2);
 
             // [backbuffer FillRect:NULL dwColor:RGB(0, 0, 0) dwFlags:0 GDFillRectFx:NULL];
             firsttime = 0;
