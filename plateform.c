@@ -370,7 +370,8 @@ void CDG_TileBlock(unsigned char *data)
     int x_pos = (col * 6) + 10;
     int y_pos = (row * 12) + 12;
 
-    for (int y = 0; y < 12; y++) {
+    int y;
+    for (y = 0; y < 12; y++) {
         c = data[y + 4] & 0x20 ? color1 : color0;
         CDG_Pixel(x_pos, y_pos + y) = c;
         CDG_pal_Pixel(x_pos, y_pos + y, c);
@@ -419,7 +420,8 @@ void CDG_TileBlockXOR(unsigned char *data)
     int x_pos = (col * 6) + 10;
     int y_pos = (row * 12) + 12;
 
-    for (int y = 0; y < 12; y++) {
+    int y;
+    for (y = 0; y < 12; y++) {
         c =  CDG_Pixel(x_pos, y_pos + y) ^ (data[y + 4] & 0x20 ? color1 : color0);
         CDG_Pixel(x_pos, y_pos + y) = c;
         CDG_pal_Pixel(x_pos, y_pos + y, c);
