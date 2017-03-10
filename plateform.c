@@ -103,8 +103,6 @@ void CDGLoad(char *filename)
 
 void getFrame(u16 *frame, int pos_mp3, int fps)
 {
-
-
     SUBCODE subCode;
     unsigned long m_size;
     int cont;
@@ -144,16 +142,16 @@ void getFrame(u16 *frame, int pos_mp3, int fps)
 
         int until;
         /*
-         * int old_pos_cdg;			// pos_cdg  en 1000/300 ms
+         * int old_pos_cdg;         // pos_cdg  en 1000/300 ms
          * old_pos_cdg = pos_cdg;
          */
 
         until = 300 / fps;
 
-        if ((pos_mp3 * 3 - pos_cdg * 10) > 300) {          // Plus d'une seconde de decalage
+        if ((pos_mp3 * 3 - pos_cdg * 10) > 300) { // Plus d'une seconde de decalage
             until = (pos_mp3 * 3 - pos_cdg * 10) / 10;
         }
-        if ((pos_mp3 * 3 - pos_cdg * 10) < -300) {         // Plus d'une seconde de decalage
+        if ((pos_mp3 * 3 - pos_cdg * 10) < -300) { // Plus d'une seconde de decalage
             until = 0;
         }
 
@@ -180,32 +178,32 @@ void CDG_Handler(SUBCODE *subCode)
     static int p = 0;
 
     switch (subCode->instruction & SC_MASK) {
-        case 1:         // Memory Preset
+        case 1: // Memory Preset
             CDG_MemPreset(subCode->data);
             break;
 
-        case 2:         // Border Preset
+        case 2: // Border Preset
             CDG_BorderPreset(subCode->data);
             break;
 
-        case 6:         // Tile Block (Normal)
+        case 6: // Tile Block (Normal)
             CDG_TileBlock(subCode->data);
             break;
 
 
-        case 30:        // Load Color Table (entries 0-7)
+        case 30: // Load Color Table (entries 0-7)
             CDG_LoadCLUT(subCode->data, 0);
             break;
 
-        case 31:        // Load Color Table (entries 8-15)
+        case 31: // Load Color Table (entries 8-15)
             CDG_LoadCLUT(subCode->data, 8);
             break;
 
-        case 38:        // Tile Block (XOR)
+        case 38: // Tile Block (XOR)
             CDG_TileBlockXOR(subCode->data);
             break;
 
-        case 28:        // Define Transparent Color
+        case 28: // Define Transparent Color
             CDG_SetTransparentColor(subCode->data);
             break;
 
@@ -213,12 +211,12 @@ void CDG_Handler(SUBCODE *subCode)
         // video overlays in a future version.
 
 
-        case 20:         // Scroll Preset
+        case 20: // Scroll Preset
 
         // I have no idea how this is supposed to work.. I
         // need to find a CD+G subcode dump that utilizes
         // this feature.
-        case 24:         // Scroll Copy
+        case 24: // Scroll Copy
 
         // Ditto on the above Scroll Preset comment
         default:
@@ -358,6 +356,7 @@ void CDG_TileBlock(unsigned char *data)
     int y_pos = (row * 12) + 12;
 
     int y;
+
     for (y = 0; y < 12; y++) {
         c = data[y + 4] & 0x20 ? color1 : color0;
         CDG_Pixel(x_pos, y_pos + y) = c;
@@ -408,6 +407,7 @@ void CDG_TileBlockXOR(unsigned char *data)
     int y_pos = (row * 12) + 12;
 
     int y;
+
     for (y = 0; y < 12; y++) {
         c =  CDG_Pixel(x_pos, y_pos + y) ^ (data[y + 4] & 0x20 ? color1 : color0);
         CDG_Pixel(x_pos, y_pos + y) = c;
